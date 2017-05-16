@@ -7,7 +7,7 @@ import           Data.Monoid
 import           Data.Version
 import           Options.Applicative
 
-import           HaskellWorks.Ci.Options.Cmd
+import           Subtend.Options.Cmd
 
 data HelpOptions = HelpOptions deriving (Show, Eq)
 
