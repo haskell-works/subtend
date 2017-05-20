@@ -1,4 +1,11 @@
+{-# LANGUAGE TypeFamilies #-}
+
 module Subtend.Format.Ass where
+
+import Data.Conduit
+import Data.Conduit.Combinators
+import Data.MonoTraversable
+import Data.Sequences
 
 data Entry = Entry
   { key   :: String
@@ -13,3 +20,6 @@ data Section = Section
 newtype Document = Document
   { sections :: [Section]
   } deriving (Eq, Show)
+
+xxx :: (Monad m, IsSequence seq, Element seq ~ Char) => Conduit seq m seq
+xxx = linesUnbounded
