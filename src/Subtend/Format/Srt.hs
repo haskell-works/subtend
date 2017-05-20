@@ -50,6 +50,9 @@ parseSubtitle = many parseSubtitleLine <* endOfLine
 parseEntry :: Parser Entry
 parseEntry = Entry <$> parseIndex <*> parseFrame <*> parseSubtitle
 
+parseEntries :: Parser [Entry]
+parseEntries = many (parseEntry <* many endOfLine)
+
 -- x :: MonadResource m => FilePath -> Producer m ByteString
 loadFile :: FilePath -> IO ()
 loadFile filename = do
