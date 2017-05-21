@@ -26,3 +26,6 @@ newtype Document = Document
 
 parseSectionName :: Parser String
 parseSectionName = char '[' *> many (notChar '\n') <* char ']'
+
+parseComment :: Parser String
+parseComment = char ';' *> many (notChar '\n')
