@@ -18,6 +18,7 @@ library
   hs-source-dirs:       src
   exposed-modules:      Subtend.Action.Help
                       , Subtend.Action.Merge
+                      , Subtend.Data.String
                       , Subtend.Format.Ass
                       , Subtend.Format.Srt
                       , Subtend.Options
@@ -29,6 +30,7 @@ library
                       , bytestring
                       , conduit
                       , conduit-combinators
+                      , data-default
                       , gitrev
                       , lens
                       , mono-traversable

@@ -32,6 +32,8 @@ data Entry = Entry
   , subtitle :: [Text]
   } deriving (Eq, Show)
 
+type Value = String
+
 parseIndex :: Parser Int
 parseIndex = decimal <* endOfLine
 
@@ -40,6 +42,12 @@ parseFrame = Frame <$> parseTime <* string (T.pack " --> ") <*> parseTime <* ski
 
 parseTime :: Parser Time
 parseTime = Time <$> decimal <* char ':' <*> decimal <* char ':' <*> decimal <* char ',' <*> decimal
+
+parseValue :: Parser Value
+parseValue = many (notChar ',')
+
+parseValues :: Parser [Value]
+parseValues = sepBy parseValue (char ',')
 
 parseSubtitleLine :: Parser Text
 parseSubtitleLine = takeWhile1 (not . isEndOfLine) <* endOfLine
