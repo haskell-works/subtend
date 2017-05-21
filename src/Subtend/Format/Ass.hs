@@ -29,3 +29,9 @@ parseSectionName = char '[' *> many (notChar '\n') <* char ']'
 
 parseComment :: Parser String
 parseComment = char ';' *> many (notChar '\n')
+
+parseIdentifier :: Parser String
+parseIdentifier = many letter
+
+parseEntry :: Parser Entry
+parseEntry = Entry <$> parseIdentifier <*> (char ':' *> many (notChar '\n'))
