@@ -2,6 +2,9 @@
 
 module Subtend.Format.Ass where
 
+import Conduit
+import Control.Applicative
+import Data.Attoparsec.Text
 import Data.Conduit
 import Data.Conduit.Combinators
 import Data.MonoTraversable
@@ -21,5 +24,5 @@ newtype Document = Document
   { sections :: [Section]
   } deriving (Eq, Show)
 
-xxx :: (Monad m, IsSequence seq, Element seq ~ Char) => Conduit seq m seq
-xxx = linesUnbounded
+parseSectionName :: Parser String
+parseSectionName = char '[' *> many (notChar '\n') <* char ']'
