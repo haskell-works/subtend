@@ -56,7 +56,10 @@ parseEmptyLine :: Default a => Parser a
 parseEmptyLine = (skipSpace *> endOfLine) *> pure def
 
 parseEntries :: Parser [Entry]
-parseEntries = many parseEntry
+parseEntries = P.catMaybes <$> many
+  (   (Just           <$> parseEntry  )
+  <|> (const Nothing  <$> parseComment)
+  )
 
 parseSection :: Parser Section
 parseSection = Section <$> parseSectionName <*> parseEntries
@@ -66,5 +69,8 @@ parseCommentOrSection
   =   (Just           <$> parseSection)
   <|> (const Nothing  <$> parseComment)
 
+-- optional :: Alternative f => f a -> f (Maybe a)
+-- optional fa = (Just <$> fa) <|> Nothing
+
 parseDocument :: Parser Document
-parseDocument = Document . P.catMaybes <$> many parseCommentOrSection
+parseDocument = Document . P.catMaybes <$> (optional (char '\65279') *> many parseCommentOrSection)

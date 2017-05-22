@@ -17,12 +17,14 @@ cabal-version:          >=1.10
 library
   hs-source-dirs:       src
   exposed-modules:      Subtend.Action.Help
+                      , Subtend.Action.Convert
                       , Subtend.Action.Merge
                       , Subtend.Data.String
                       , Subtend.Format.Ass
                       , Subtend.Format.Srt
                       , Subtend.Options
                       , Subtend.Options.Cmd
+                      , Subtend.Options.Cmd.Convert
                       , Subtend.Options.Cmd.Help
                       , Subtend.Options.Cmd.Merge
   build-depends:        base >= 4.7 && < 5
