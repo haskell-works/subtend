@@ -9,6 +9,8 @@ import Subtend.Data.ToMap
 
 newtype Values = Values [String] deriving (Eq, Show)
 
+newtype Entries = Entries [Entry] deriving (Eq, Show)
+
 data Entry = Entry
   { key    :: String
   , values :: [String]
@@ -24,7 +26,13 @@ newtype Document = Document
   } deriving (Eq, Show)
 
 instance ToMap [Entry] where
-  type MapKey [Entry] = String
+  type MapKey [Entry]   = String
   type MapValue [Entry] = [Values]
   toMap (Entry key values:es) = unionWith (++) (singleton key [Values values]) (toMap es)
   toMap []                    = empty
+
+instance ToMap [Section] where
+  type MapKey [Section]   = String
+  type MapValue [Section] = [Entries]
+  toMap (Section name entries:es) = unionWith (++) (singleton name [Entries entries]) (toMap es)
+  toMap []                        = empty
