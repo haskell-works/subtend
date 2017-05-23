@@ -104,7 +104,7 @@ spec = describe "Subtend.Format.AssSpec" $ do
     let expected = Right $ Document
           [ Section
             { name = "Script Info"
-            , entry =
+            , entries =
               [ Entry "Title"                 ["Default Aegisub file"]
               , Entry "ScriptType"            ["v4.00+"]
               , Entry "WrapStyle"             ["0"]
@@ -122,7 +122,7 @@ spec = describe "Subtend.Format.AssSpec" $ do
             }
           , Section
             { name = "V4+ Styles"
-            , entry =
+            , entries =
               [ Entry "Format"                ["Name"     , "Fontname", "Fontsize", "PrimaryColour", "SecondaryColour", "OutlineColour","BackColour","Bold","Italic","Underline","StrikeOut","ScaleX","ScaleY","Spacing","Angle","BorderStyle","Outline","Shadow","Alignment","MarginL","MarginR","MarginV","Encoding"]
               , Entry "Style"                 ["Default"  , "Arial"   , "36"      , "&H00FFFFFF"   , "&H000000FF"     , "&H00000000"   ,"&H00000000","0"   ,"0"     ,"0"        ,"0"        ,"100"   ,"100"   ,"0"      ,"0"    ,"1"          ,"2"      ,"2"     ,"2"        ,"10"     ,"10"     ,"10"     ,"1"       ]
               , Entry "Style"                 ["Caption"  , "Arial"   , "20"      , "&H0000E7FF"   , "&H00FFFFFF"     , "&H00000000"   ,"&H00000000","0"   ,"0"     ,"0"        ,"0"        ,"100"   ,"100"   ,"0"      ,"0"    ,"1"          ,"2"      ,"2"     ,"2"        ,"10"     ,"10"     ,"10"     ,"1"       ]
@@ -132,7 +132,7 @@ spec = describe "Subtend.Format.AssSpec" $ do
             }
           , Section
             { name = "Events"
-            , entry =
+            , entries =
               [ Entry "Format"                ["Layer", "Start"     ,"End"       ,"Style"  ,"Name","MarginL","MarginR","MarginV","Effect","Text"                                                  ]
               , Entry "Dialogue"              ["0"    , "0:00:03.23","0:00:07.86","Default",""    ,"0"      ,"0"      ,"0"      ,""      ,"It's been my dream to\\Nwork here at Sangyo Chuo Bank."]
               , Entry "Dialogue"              ["0"    , "0:00:09.02","0:00:11.84","Default",""    ,"0"      ,"0"      ,"0"      ,""      ,"However","we're not\\Nthe only bank around","are we?"  ]

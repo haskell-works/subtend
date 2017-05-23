@@ -21,7 +21,9 @@ library
                       , Subtend.Action.Merge
                       , Subtend.Ast.Ass
                       , Subtend.Ast.Srt
+                      , Subtend.Conversion
                       , Subtend.Data.String
+                      , Subtend.Data.ToMap
                       , Subtend.Format.Ass
                       , Subtend.Format.Srt
                       , Subtend.Options
@@ -34,6 +36,7 @@ library
                       , bytestring
                       , conduit
                       , conduit-combinators
+                      , containers
                       , data-default
                       , gitrev
                       , lens

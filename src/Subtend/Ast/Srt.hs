@@ -20,4 +20,6 @@ data Entry = Entry
   , subtitle :: [Text]
   } deriving (Eq, Show)
 
+newtype Document = Document [Entry] deriving (Eq, Show)
+
 type Value = String
