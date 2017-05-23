@@ -3,6 +3,7 @@
 module Subtend.Conversion where
 
 import Data.Map as M
+import Data.Maybe
 import Subtend.Ast.Ass    as Ass
 import Subtend.Ast.Srt    as Srt
 import Subtend.Data.List
@@ -17,9 +18,10 @@ buildSrt = undefined
 
 convert :: Ass.Document -> Either String Srt.Document
 convert (Ass.Document sections) = case M.lookup "Events" (toMap sections) of
-  Just entries -> case M.lookup "Format" (toMap entries) of
-    Just format -> undefined
-    Nothing -> Left "'Format' entry missing"
+  Just entries -> case toMap entries of
+    entryMap -> case M.lookup "Format" entryMap >>= listToMaybe of
+      Just (Values format) -> undefined
+      Nothing -> Left "'Format' entry missing"
   Nothing -> Left "[Events] section missing"
   -- case find (\s -> Ass.name s == "Events") sections of
   --   Just section -> case Ass.entries section of

@@ -36,3 +36,9 @@ instance ToMap [Section] where
   type MapValue [Section] = [Entry]
   toMap (Section name entry:es) = unionWith (++) (singleton name entry) (toMap es)
   toMap []                      = empty
+
+-- instance ToMap [Value] where
+--   type MapKey [Value]   = String
+--   type MapValue [Value] = [Entry]
+--   toMap (Section name entry:es) = unionWith (++) (singleton name entry) (toMap es)
+--   toMap []                      = empty
