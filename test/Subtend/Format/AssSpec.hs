@@ -5,6 +5,7 @@ module Subtend.Format.AssSpec (spec) where
 import Control.Applicative
 import Data.Attoparsec.Text
 import HaskellWorks.Hspec.Hedgehog
+import Subtend.Ast.Ass
 import Subtend.Format.Ass
 import Test.Hspec
 

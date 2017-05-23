@@ -5,6 +5,7 @@ module Subtend.Format.SrtSpec (spec) where
 import Control.Applicative
 import Data.Attoparsec.Text
 import HaskellWorks.Hspec.Hedgehog
+import Subtend.Ast.Srt
 import Subtend.Format.Srt
 import Test.Hspec
 

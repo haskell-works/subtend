@@ -7,32 +7,13 @@ import Control.Applicative
 import Data.Attoparsec.Text
 import Data.Conduit
 import Data.Text
+import Subtend.Ast.Srt
 import System.IO
 
 import qualified Data.Attoparsec.Text as A
 import qualified Data.ByteString      as BS
 import qualified Data.Conduit         as C
 import qualified Data.Text            as T
-
-data Time = Time
-  { hour    :: Int
-  , minutes :: Int
-  , seconds :: Int
-  , millis  :: Int
-  } deriving (Eq, Show)
-
-data Frame = Frame
-  { start :: Time
-  , stop  :: Time
-  } deriving (Eq, Show)
-
-data Entry = Entry
-  { index    :: Int
-  , frame    :: Frame
-  , subtitle :: [Text]
-  } deriving (Eq, Show)
-
-type Value = String
 
 parseIndex :: Parser Int
 parseIndex = decimal <* endOfLine

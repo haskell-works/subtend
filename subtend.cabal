@@ -19,6 +19,8 @@ library
   exposed-modules:      Subtend.Action.Help
                       , Subtend.Action.Convert
                       , Subtend.Action.Merge
+                      , Subtend.Ast.Ass
+                      , Subtend.Ast.Srt
                       , Subtend.Data.String
                       , Subtend.Format.Ass
                       , Subtend.Format.Srt

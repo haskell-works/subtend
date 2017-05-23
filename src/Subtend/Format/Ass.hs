@@ -12,24 +12,11 @@ import Data.Default
 import Data.MonoTraversable
 import Data.Sequences
 import Prelude
+import Subtend.Ast.Ass
 import Subtend.Data.String
 
 import qualified Data.Maybe as P
 import qualified Prelude    as P
-
-data Entry = Entry
-  { key    :: String
-  , values :: [String]
-  } deriving (Eq, Show)
-
-data Section = Section
-  { name  :: String
-  , entry :: [Entry]
-  } deriving (Eq, Show)
-
-newtype Document = Document
-  { sections :: [Section]
-  } deriving (Eq, Show)
 
 parseLines :: Parser ()
 parseLines = many (many (char ' ') *> endOfLine) >> pure ()
