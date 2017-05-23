@@ -2,7 +2,7 @@
 
 module Subtend.Conversion where
 
-import Data.Map
+import Data.Map as M
 import Subtend.Ast.Ass    as Ass
 import Subtend.Ast.Srt    as Srt
 import Subtend.Data.List
@@ -16,7 +16,11 @@ buildSrt = undefined
 -- groupBy _ _ []       = empty
 
 convert :: Ass.Document -> Either String Srt.Document
-convert (Ass.Document sections) = let x = toMap sections in undefined
+convert (Ass.Document sections) = case M.lookup "Events" (toMap sections) of
+  Just entries -> case M.lookup "Format" (toMap entries) of
+    Just format -> undefined
+    Nothing -> Left "'Format' entry missing"
+  Nothing -> Left "[Events] section missing"
   -- case find (\s -> Ass.name s == "Events") sections of
   --   Just section -> case Ass.entries section of
   --     entries -> let x = toMap Ass.key Ass.values entries in undefined
