@@ -22,6 +22,7 @@ library
                       , Subtend.Ast.Ass
                       , Subtend.Ast.Srt
                       , Subtend.Conversion
+                      , Subtend.Data.List
                       , Subtend.Data.String
                       , Subtend.Data.ToMap
                       , Subtend.Format.Ass
