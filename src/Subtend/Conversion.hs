@@ -16,11 +16,15 @@ buildSrt = undefined
 -- groupBy fk fv (a:as) = unionWith (++)
 -- groupBy _ _ []       = empty
 
+formatAndDialogueToSrtEntries :: Values -> Values -> Srt.Entry
+formatAndDialogueToSrtEntries = undefined
+
 convert :: Ass.Document -> Either String Srt.Document
 convert (Ass.Document sections) = case M.lookup "Events" (toMap sections) of
   Just entries -> case toMap entries of
     entryMap -> case M.lookup "Format" entryMap >>= listToMaybe of
-      Just (Values format) -> undefined
+      Just format -> case M.lookup "Dialogue" entryMap of
+        Just dialogues -> Right (Srt.Document (formatAndDialogueToSrtEntries format <$> dialogues))
       Nothing -> Left "'Format' entry missing"
   Nothing -> Left "[Events] section missing"
   -- case find (\s -> Ass.name s == "Events") sections of
