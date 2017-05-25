@@ -2,34 +2,38 @@
 
 module Subtend.Conversion where
 
-import Data.Map as M
+import Data.Attoparsec.Text
 import Data.Maybe
-import Subtend.Ast.Ass    as Ass
-import Subtend.Ast.Srt    as Srt
 import Subtend.Data.List
 import Subtend.Data.ToMap
+import Subtend.Duration
 
-import qualified Data.Text as T
+import qualified Data.Map           as M
+import qualified Data.Text          as T
+import qualified Subtend.Ast.Ass    as ASS
+import qualified Subtend.Ast.Srt    as SRT
+import qualified Subtend.Format.Ass as ASS
 
-buildSrt :: [Map String String] -> Either String Srt.Document
+buildSrt :: [M.Map String String] -> Either String SRT.Document
 buildSrt = undefined
 
-asTime :: String -> Maybe Srt.Time
-asTime = undefined
+asTime :: String -> Maybe SRT.Time
+asTime text = either (const Nothing) (Just . viaDuration) (parseOnly ASS.parseTime (T.pack text))
 
-formatAndDialogueToSrtEntries :: Values -> Values -> Maybe Srt.Entry
-formatAndDialogueToSrtEntries (Values ks) (Values vs) = Srt.Entry 0 <$> frame <*> text
+formatAndDialogueToSrtEntries :: ASS.Values -> ASS.Values -> Maybe SRT.Entry
+formatAndDialogueToSrtEntries (ASS.Values ks) (ASS.Values vs) =
+  SRT.Entry 0 <$> frame <*> text
   where kvs   = M.fromList (ks `zip` vs)
-        frame = Srt.Frame
+        frame = SRT.Frame
                 <$> (M.lookup "Start" kvs >>= asTime)
-                <*> (M.lookup "Stop"  kvs >>= asTime)
+                <*> (M.lookup "End"   kvs >>= asTime)
         text  = (:[]) . T.pack <$> M.lookup "Text" kvs
 
-convert :: Ass.Document -> Either String Srt.Document
-convert (Ass.Document sections) = case M.lookup "Events" (toMap sections) of
+convert :: ASS.Document -> Either String SRT.Document
+convert (ASS.Document sections) = case M.lookup "Events" (toMap sections) of
   Just entries -> case toMap entries of
     entryMap -> case M.lookup "Format" entryMap >>= listToMaybe of
       Just format -> case M.lookup "Dialogue" entryMap of
-        Just dialogues -> Right (Srt.Document (catMaybes (formatAndDialogueToSrtEntries format <$> dialogues)))
+        Just dialogues -> Right (SRT.Document (catMaybes (formatAndDialogueToSrtEntries format <$> dialogues)))
       Nothing -> Left "'Format' entry missing"
   Nothing -> Left "[Events] section missing"

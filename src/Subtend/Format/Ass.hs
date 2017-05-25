@@ -1,4 +1,5 @@
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeFamilies      #-}
 
 module Subtend.Format.Ass where
 
@@ -34,7 +35,7 @@ parseIdentifier :: Parser String
 parseIdentifier = many (letter <|> char ' ')
 
 parseValue :: Parser String
-parseValue = strip <$> many (satisfy (`P.notElem` "\n,"))
+parseValue = strip <$> many (satisfy (`P.notElem` ("\n," :: String)))
 
 parseEntry :: Parser Entry
 parseEntry = Entry <$> parseIdentifier <*> (char ':' *> sepBy parseValue (char ',') <* parseLines)
@@ -61,3 +62,6 @@ parseCommentOrSection
 
 parseDocument :: Parser Document
 parseDocument = Document . P.catMaybes <$> (optional (char '\65279') *> many parseCommentOrSection)
+
+parseTime :: Parser Time
+parseTime = Time <$> decimal <* char ':' <*> decimal <* char ':' <*> decimal <* char '.' <*> decimal

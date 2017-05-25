@@ -1,6 +1,7 @@
 module Subtend.Ast.Srt where
 
 import Data.Text
+import Subtend.Duration
 
 data Time = Time
   { hour    :: Int
@@ -19,6 +20,21 @@ data Entry = Entry
   , frame    :: Frame
   , subtitle :: [Text]
   } deriving (Eq, Show)
+
+instance ToDuration Time where
+  toDuration (Time hour minutes seconds millis) = Duration (((((hour * 60) + minutes) * 60 + seconds) * 1000) + millis)
+
+instance FromDuration Time where
+  fromDuration (Duration a) = Time
+    { hour    = hours'
+    , minutes = minutes'
+    , seconds = seconds'
+    , millis  = millis'
+    }
+    where (b, millis' ) = a `divMod` 1000
+          (c, seconds') = b `divMod` 60
+          (d, minutes') = c `divMod` 60
+          hours'        = d
 
 newtype Document = Document [Entry] deriving (Eq, Show)
 

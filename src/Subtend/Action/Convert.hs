@@ -8,7 +8,7 @@ import Data.Semigroup
 import Data.Text.Encoding
 import Subtend.Format.Ass
 import Subtend.Options.Cmd.Convert
-
+import Subtend.Conversion
 import Control.Applicative
 import Data.Attoparsec.Text
 
@@ -22,4 +22,8 @@ actionConvert cmd = do
   Prelude.putStrLn $ "source data: " <> show (decodeUtf8 sourceData)
   let !parseResult = parseOnly parseDocument (decodeUtf8 sourceData)
   Prelude.putStrLn $ "parse result: " <> show parseResult
+  case parseResult of
+    Right doc -> Prelude.putStrLn $ "xxx" <> show (convert doc)
+    Left _    -> Prelude.putStrLn "moo"
+  -- Prelude.putStrLn $ "parse result: " <> show parseResult
   BS.writeFile (cmd ^. target) sourceData

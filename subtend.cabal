@@ -22,9 +22,11 @@ library
                       , Subtend.Ast.Ass
                       , Subtend.Ast.Srt
                       , Subtend.Conversion
+                      , Subtend.Data.Attoparsec.Text
                       , Subtend.Data.List
                       , Subtend.Data.String
                       , Subtend.Data.ToMap
+                      , Subtend.Duration
                       , Subtend.Format.Ass
                       , Subtend.Format.Srt
                       , Subtend.Options
