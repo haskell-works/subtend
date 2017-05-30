@@ -7,6 +7,7 @@ import Data.Maybe
 import Subtend.Data.List
 import Subtend.Data.ToMap
 import Subtend.Duration
+import Data.Semigroup
 
 import qualified Data.Map           as M
 import qualified Data.Text          as T
@@ -20,10 +21,15 @@ buildSrt = undefined
 asTime :: String -> Maybe SRT.Time
 asTime text = either (const Nothing) (Just . viaDuration) (parseOnly ASS.parseTime (T.pack text))
 
+zipSquish :: (b -> b -> b) -> [a] -> [b] -> [(a, b)]
+zipSquish f [a]    (b:c:bs) = zipSquish f [a] (f b c:bs)
+zipSquish f (a:as) (b:bs)   = (a, b):zipSquish f as bs
+zipSquish _ _      _        = []
+
 formatAndDialogueToSrtEntries :: ASS.Values -> ASS.Values -> Maybe SRT.Entry
 formatAndDialogueToSrtEntries (ASS.Values ks) (ASS.Values vs) =
   SRT.Entry 0 <$> frame <*> text
-  where kvs   = M.fromList (ks `zip` vs)
+  where kvs   = M.fromList (zipSquish (\a b -> a <> "," <> b) ks vs)
         frame = SRT.Frame
                 <$> (M.lookup "Start" kvs >>= asTime)
                 <*> (M.lookup "End"   kvs >>= asTime)
