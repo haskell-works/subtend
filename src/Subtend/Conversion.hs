@@ -8,15 +8,13 @@ import Subtend.Data.List
 import Subtend.Data.ToMap
 import Subtend.Duration
 import Data.Semigroup
+import Data.Text.Lazy.Builder
 
 import qualified Data.Map           as M
 import qualified Data.Text          as T
 import qualified Subtend.Ast.Ass    as ASS
 import qualified Subtend.Ast.Srt    as SRT
 import qualified Subtend.Format.Ass as ASS
-
-buildSrt :: [M.Map String String] -> Either String SRT.Document
-buildSrt = undefined
 
 asTime :: String -> Maybe SRT.Time
 asTime text = either (const Nothing) (Just . viaDuration) (parseOnly ASS.parseTime (T.pack text))

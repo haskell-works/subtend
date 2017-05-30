@@ -34,7 +34,9 @@ library
                       , Subtend.Options.Cmd.Convert
                       , Subtend.Options.Cmd.Help
                       , Subtend.Options.Cmd.Merge
+                      , Subtend.Print.Srt
   build-depends:        base >= 4.7 && < 5
+                      , ansi-wl-pprint
                       , attoparsec
                       , bytestring
                       , conduit
