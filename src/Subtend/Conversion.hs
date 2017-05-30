@@ -24,14 +24,20 @@ zipSquish f [a]    (b:c:bs) = zipSquish f [a] (f b c:bs)
 zipSquish f (a:as) (b:bs)   = (a, b):zipSquish f as bs
 zipSquish _ _      _        = []
 
+escape :: String -> [String]
+escape = go []
+  where go bs ('\\':'N':as) = reverse bs:go [] as
+        go bs (a:as)        = go (a:bs) as
+        go bs []            = [reverse bs]
+
 formatAndDialogueToSrtEntries :: ASS.Values -> ASS.Values -> Maybe SRT.Entry
 formatAndDialogueToSrtEntries (ASS.Values ks) (ASS.Values vs) =
   SRT.Entry 0 <$> frame <*> text
-  where kvs   = M.fromList (zipSquish (\a b -> a <> "," <> b) ks vs)
+  where kvs   = M.fromList (zipSquish (\a b -> a <> ", " <> b) ks vs)
         frame = SRT.Frame
                 <$> (M.lookup "Start" kvs >>= asTime)
                 <*> (M.lookup "End"   kvs >>= asTime)
-        text  = (:[]) . T.pack <$> M.lookup "Text" kvs
+        text  = ((T.pack <$>) . escape) <$> M.lookup "Text" kvs
 
 convert :: ASS.Document -> Either String SRT.Document
 convert (ASS.Document sections) = case M.lookup "Events" (toMap sections) of

@@ -3,27 +3,34 @@
 
 module Subtend.Action.Convert where
 
+import Control.Applicative
 import Control.Lens
+import Data.Attoparsec.Text
 import Data.Semigroup
 import Data.Text.Encoding
+import Subtend.Conversion
 import Subtend.Format.Ass
 import Subtend.Options.Cmd.Convert
-import Subtend.Conversion
-import Control.Applicative
-import Data.Attoparsec.Text
+import Subtend.Print.Srt
+import System.IO                    (hClose, openBinaryFile, IOMode(..))
+import Text.PrettyPrint.ANSI.Leijen (hPutDoc, pretty)
 
 import qualified Data.ByteString   as BS
 import qualified Data.Text.Lazy.IO as LTIO
 
 actionConvert :: CmdConvert -> IO ()
 actionConvert cmd = do
-  Prelude.putStrLn $ "Converting " <> show (cmd ^. source) <> " to " <> show (cmd ^. target) <> " as " <> show (cmd ^. format)
+  Prelude.putStrLn
+    $  "Converting "  <> show (cmd ^. source)
+    <> " to "         <> show (cmd ^. target)
+    <> " as "         <> show (cmd ^. format)
   sourceData <- BS.readFile (cmd ^. source)
-  Prelude.putStrLn $ "source data: " <> show (decodeUtf8 sourceData)
   let !parseResult = parseOnly parseDocument (decodeUtf8 sourceData)
-  Prelude.putStrLn $ "parse result: " <> show parseResult
   case parseResult of
-    Right doc -> Prelude.putStrLn $ "xxx" <> show (convert doc)
+    Right doc -> case convert doc of
+      Right srtDoc -> do
+        hOut <- openBinaryFile (cmd ^. target) WriteMode
+        hPutDoc hOut (pretty srtDoc)
+        hClose hOut
+      Left _       -> Prelude.putStrLn "Could not convert"
     Left _    -> Prelude.putStrLn "moo"
-  -- Prelude.putStrLn $ "parse result: " <> show parseResult
-  BS.writeFile (cmd ^. target) sourceData

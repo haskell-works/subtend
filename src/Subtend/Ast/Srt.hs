@@ -1,7 +1,10 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 module Subtend.Ast.Srt where
 
-import Data.Text
+import Data.Text hiding (index)
 import Subtend.Duration
+import Subtend.Normalise
 
 data Time = Time
   { hour    :: Int
@@ -39,3 +42,11 @@ instance FromDuration Time where
 newtype Document = Document [Entry] deriving (Eq, Show)
 
 type Value = String
+
+instance Normalise Document where
+  normalise (Document entries) = Document (normalise entries)
+
+instance Normalise [Entry] where
+  normalise = go 1
+    where go n (e:es) = e { index = n } : go (n + 1) es
+          go _ _      = []

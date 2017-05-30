@@ -29,6 +29,7 @@ library
                       , Subtend.Duration
                       , Subtend.Format.Ass
                       , Subtend.Format.Srt
+                      , Subtend.Normalise
                       , Subtend.Options
                       , Subtend.Options.Cmd
                       , Subtend.Options.Cmd.Convert
