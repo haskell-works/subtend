@@ -11,12 +11,12 @@ data Time = Time
   , minutes :: Int
   , seconds :: Int
   , millis  :: Int
-  } deriving (Eq, Show)
+  } deriving (Eq, Ord, Show)
 
 data Frame = Frame
   { start :: Time
   , stop  :: Time
-  } deriving (Eq, Show)
+  } deriving (Eq, Ord, Show)
 
 data Entry = Entry
   { index    :: Int
