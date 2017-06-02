@@ -21,5 +21,6 @@ cabal.sandbox.config
 /.stack-work/
 /result
 /deps
+/tmp
 
 .stack-work

@@ -18,6 +18,10 @@ spec = describe "Subtend.Format.SrtSpec" $ do
     let result = parseOnly parseIndex "1\n"
     let expected = Right 1
     result `shouldBe` expected
+  it "Can parse Index CRLF" $ do
+    let result = parseOnly parseIndex "1\r\n"
+    let expected = Right 1
+    result `shouldBe` expected
   it "Can parse Time" $ do
     let result = parseOnly parseTime "01:02:03,730"
     let expected = Right (Time 1 2 3 730)
@@ -37,6 +41,26 @@ spec = describe "Subtend.Format.SrtSpec" $ do
           \(半沢)この産業中央銀行で\n\
           \働くことは 私の夢でした\n\
           \\n\
+          \"
+    let expected = Right Entry
+          { index    = 1
+          , frame    = Frame
+            { start = Time 0 0 3 730
+            , stop  = Time 0 0 8 700
+            }
+          , subtitle =
+            [ "(半沢)この産業中央銀行で"
+            , "働くことは 私の夢でした"
+            ]
+          }
+    result `shouldBe` expected
+  it "Can parse Entry CRLF" $ do
+    let result = parseOnly (parseEntry <* many anyChar)
+          "1\r\n\
+          \00:00:03,730 --> 00:00:08,700\r\n\
+          \(半沢)この産業中央銀行で\r\n\
+          \働くことは 私の夢でした\r\n\
+          \\r\n\
           \"
     let expected = Right Entry
           { index    = 1
@@ -88,6 +112,44 @@ spec = describe "Subtend.Format.SrtSpec" $ do
             }
           ]
     result `shouldBe` expected
+  it "Can parse multiple entries CRLF" $ do
+    let result = parseOnly (parseEntries <* many anyChar)
+          "1\r\n\
+          \00:00:03,730 --> 00:00:08,700\r\n\
+          \(半沢)この産業中央銀行で\r\n\
+          \働くことは 私の夢でした\r\n\
+          \\r\n\
+          \2\r\n\
+          \00:00:08,700 --> 00:00:12,340\r\n\
+          \≪(面接官)いや しかし銀行は\r\n\
+          \うちだけじゃないでしょう\r\n\
+          \\r\n\
+          \"
+    let expected = Right
+          [ Entry
+            { index    = 1
+            , frame    = Frame
+              { start = Time 0 0 3 730
+              , stop  = Time 0 0 8 700
+              }
+            , subtitle =
+              [ "(半沢)この産業中央銀行で"
+              , "働くことは 私の夢でした"
+              ]
+            }
+          , Entry
+            { index = 2
+            , frame = Frame
+              { start = Time 0 0 8 700
+              , stop = Time 0 0 12 340
+              }
+            , subtitle =
+              [ "≪(面接官)いや しかし銀行は"
+              , "うちだけじゃないでしょう"
+              ]
+            }
+          ]
+    result `shouldBe` expected
   it "Can parse multiple entries with more spacing" $ do
     let result = parseOnly parseEntries
           "1\n\
@@ -102,6 +164,46 @@ spec = describe "Subtend.Format.SrtSpec" $ do
           \うちだけじゃないでしょう\n\
           \\n\
           \\n\
+          \"
+    let expected = Right
+          [ Entry
+            { index    = 1
+            , frame    = Frame
+              { start = Time 0 0 3 730
+              , stop  = Time 0 0 8 700
+              }
+            , subtitle =
+              [ "(半沢)この産業中央銀行で"
+              , "働くことは 私の夢でした"
+              ]
+            }
+          , Entry
+            { index = 2
+            , frame = Frame
+              { start = Time 0 0 8 700
+              , stop = Time 0 0 12 340
+              }
+            , subtitle =
+              [ "≪(面接官)いや しかし銀行は"
+              , "うちだけじゃないでしょう"
+              ]
+            }
+          ]
+    result `shouldBe` expected
+  it "Can parse multiple entries with more spacing CRLF" $ do
+    let result = parseOnly parseEntries
+          "1\r\n\
+          \00:00:03,730 --> 00:00:08,700\r\n\
+          \(半沢)この産業中央銀行で\r\n\
+          \働くことは 私の夢でした\r\n\
+          \\r\n\
+          \\r\n\
+          \2\r\n\
+          \00:00:08,700 --> 00:00:12,340\r\n\
+          \≪(面接官)いや しかし銀行は\r\n\
+          \うちだけじゃないでしょう\r\n\
+          \\r\n\
+          \\r\n\
           \"
     let expected = Right
           [ Entry
