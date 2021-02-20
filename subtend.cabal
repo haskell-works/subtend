@@ -1,7 +1,7 @@
 name:                   subtend
 version:                0.1.0.0
--- synopsis:
--- description:
+synopsis:               Subtitle manipulation
+description:            Subtitle manipulation.
 homepage:               https://github.com/githubuser/subtend#readme
 license:                BSD3
 license-file:           LICENSE
@@ -36,6 +36,7 @@ library
                       , Subtend.Options.Cmd.Help
                       , Subtend.Options.Cmd.Merge
                       , Subtend.Print.Srt
+  other-modules:        Paths_subtend
   build-depends:        base >= 4.7 && < 5
                       , ansi-wl-pprint
                       , attoparsec
@@ -60,14 +61,17 @@ executable subtend
                       , lens
                       , optparse-applicative
                       , subtend
+  other-modules:        Paths_subtend
   default-language:     Haskell2010
 
 test-suite subtend-test
   type:                 exitcode-stdio-1.0
   hs-source-dirs:       test
   main-is:              Spec.hs
-  other-modules:        Subtend.Format.AssSpec
+  other-modules:        Paths_subtend
+                      , Subtend.Format.AssSpec
                       , Subtend.Format.SrtSpec
+  build-tool-depends:   hspec-discover:hspec-discover
   build-depends:        base
                       , attoparsec
                       , hspec
